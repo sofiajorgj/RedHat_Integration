@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:signavio="http://www.signavio.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="Signavio Process Editor, http://www.signavio.com" exporterVersion="9.8.1-SNAPSHOT" expressionLanguage="http://www.w3.org/TR/XPath" id="sid-563e5112-b027-4cea-8d97-8e60ca7c65d9" targetNamespace="http://www.signavio.com" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+   <process id="sid-ecebc7a7-826e-4510-b17e-c939edc16e02" isClosed="false" isExecutable="false" processType="None">
+      <extensionElements>
+         <signavio:signavioDiagramMetaData metaKey="revisionid" metaValue="2e0004d7e7b04ad3b5d116eff028c883"/>
+      </extensionElements>
+      <task completionQuantity="1" id="sid-B023770E-8AA1-4964-A583-1AD5DDA2CDC9" isForCompensation="false" name="creating new multilanguage title" startQuantity="1">
+         <extensionElements>
+            <signavio:signavioDictionaryLink propertyId="name">
+               <signavio:dictionaryLink>/glossary/75e3f46099d14ad28eb77a6ab28221ec</signavio:dictionaryLink>
+            </signavio:signavioDictionaryLink>
+            <signavio:signavioMetaData metaKey="bgcolor" metaValue="#ffffcc"/>
+            <signavio:signavioMetaData metaKey="erteiltfreigabe" metaValue=""/>
+            <signavio:signavioMetaData metaKey="wirdkonsultiert" metaValue=""/>
+            <signavio:signavioMetaData metaKey="wirdinformiert" metaValue=""/>
+            <signavio:signavioMetaData metaKey="risikenundkontrollen" metaValue=""/>
+            <signavio:signavioMetaData metaKey="externaldocuments" metaValue=""/>
+         </extensionElements>
+      </task>
+   </process>
+   <bpmndi:BPMNDiagram id="sid-2efee3d8-735e-4d11-b923-e296db257297">
+      <bpmndi:BPMNPlane bpmnElement="sid-ecebc7a7-826e-4510-b17e-c939edc16e02" id="sid-d53ca44a-f4d6-4cf0-acae-bd4b80d9595f">
+         <bpmndi:BPMNShape bpmnElement="sid-B023770E-8AA1-4964-A583-1AD5DDA2CDC9" id="sid-B023770E-8AA1-4964-A583-1AD5DDA2CDC9_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="300.0" y="105.0"/>
+            <bpmndi:BPMNLabel labelStyle="sid-4be2b5f0-9c79-4b5f-aa41-55c71f354f22">
+               <omgdc:Bounds height="36.0" width="74.82857513427734" x="312.5857124328613" y="125.0"/>
+            </bpmndi:BPMNLabel>
+         </bpmndi:BPMNShape>
+      </bpmndi:BPMNPlane>
+      <bpmndi:BPMNLabelStyle id="sid-4be2b5f0-9c79-4b5f-aa41-55c71f354f22">
+         <omgdc:Font isBold="false" isItalic="false" isStrikeThrough="false" isUnderline="false" name="Arial" size="12.0"/>
+      </bpmndi:BPMNLabelStyle>
+   </bpmndi:BPMNDiagram>
+</definitions>
