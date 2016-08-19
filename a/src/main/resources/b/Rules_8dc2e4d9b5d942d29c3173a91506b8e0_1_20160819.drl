@@ -1,0 +1,174 @@
+package null.checkquantityandquality 
+
+import java.time.OffsetTime
+import java.util.Arrays
+import org.slf4j.Logger
+import java.text.DecimalFormat
+import org.slf4j.LoggerFactory
+import com.signavio.dmn.formulae.v2.DmnFormulae
+import java.util.ArrayList
+import java.util.HashSet
+import java.math.BigDecimal
+import java.util.List
+import java.time.OffsetDateTime
+import com.signavio.dmn.formulae.v2.DmnHierarchyFormulae
+import java.time.LocalDate
+import java.util.Collections
+import java.math.RoundingMode
+
+global String modelId
+global Integer revisionNumber
+global List $allMessages
+global Logger $logger
+
+declare  DmnFormulae 
+end
+
+declare  DmnFormulaeLocal  extends  DmnFormulae  
+end
+
+declare  DmnHierarchyFormulae 
+end
+
+declare  Input 
+    quantityCheck : String  
+    qualityCheck : String  
+end
+
+declare  CheckQuantityAndQuality_Output 
+    checkQuantityAndQuality : String  
+end
+
+declare  AnnotationItem 
+    decision : String  
+    annotationName : String  
+    ruleName : String  
+    category : AnnotationCategory  
+    message : String  
+    timestamp : OffsetDateTime  
+end
+
+declare enum AnnotationCategory
+	INFO,CRITICAL,REGULATION,POLICY;
+end
+
+rule "initialize_version_info"
+    no-loop true
+    salience 1000
+    ruleflow-group 'checkquantityandquality'
+when
+then
+	drools.getWorkingMemory().setGlobal("modelId", "8dc2e4d9b5d942d29c3173a91506b8e0");
+	drools.getWorkingMemory().setGlobal("revisionNumber", 1);
+end
+
+rule "initialize_annotations_list"
+    no-loop true
+    salience 1000
+    ruleflow-group 'checkquantityandquality'
+when
+then
+	drools.getWorkingMemory().setGlobal("$allMessages", new ArrayList());
+end
+
+rule "add_formulae_to_memory"
+    no-loop true
+    salience 1000
+    ruleflow-group 'checkquantityandquality'
+when
+then
+	insert(new DmnFormulaeLocal());
+	insert(new DmnHierarchyFormulae());
+end
+
+rule "init_logger"
+    no-loop true
+    salience 1000
+    ruleflow-group 'checkquantityandquality'
+when
+then
+	drools.getWorkingMemory().setGlobal("$logger", LoggerFactory.getLogger("DroolsExecution"));
+end
+
+rule "log_input_rule"
+    no-loop true
+    salience 999
+    ruleflow-group 'checkquantityandquality'
+when
+    $input : Input(  )  
+then
+	$logger.info($input.toString());
+end
+
+rule "checkQuantityAndQuality_rule_1"
+    no-loop true
+    //decision:  checkQuantityAndQuality
+    salience 2
+    ruleflow-group 'checkquantityandquality'
+when
+    $F : DmnFormulaeLocal(  )  
+    $H : DmnHierarchyFormulae(  )  
+    not( 
+    CheckQuantityAndQuality_Output(  )   ) 
+    $input : Input(  )  
+    eval( $F.nullSafeEval($F.equals($input.getQualityCheck(), "Acceptable")) ) 
+    eval( $F.nullSafeEval($F.equals($input.getQuantityCheck(), "Amount ok")) ) 
+then
+	CheckQuantityAndQuality_Output $checkQuantityAndQuality_Output = new CheckQuantityAndQuality_Output();
+	$checkQuantityAndQuality_Output.setCheckQuantityAndQuality("Passed");
+	insert($checkQuantityAndQuality_Output);
+		{
+			AnnotationItem $annotation = new AnnotationItem();
+			String $message = $F.createAnnotation(new Object[] {"The quantity delivered and the quality is acceptable"});
+			$annotation.setDecision("checkQuantityAndQuality");
+			$annotation.setRuleName("checkQuantityAndQuality_rule_1");
+			$annotation.setCategory(AnnotationCategory.INFO);
+			$annotation.setMessage($message);
+			$annotation.setTimestamp(OffsetDateTime.now());
+			$allMessages.add($annotation);
+		}
+end
+
+rule "checkQuantityAndQuality_rule_2"
+    no-loop true
+    //decision:  checkQuantityAndQuality
+    salience 1
+    ruleflow-group 'checkquantityandquality'
+when
+    $F : DmnFormulaeLocal(  )  
+    $H : DmnHierarchyFormulae(  )  
+    not( 
+    CheckQuantityAndQuality_Output(  )   ) 
+    $input : Input(  )  
+then
+	CheckQuantityAndQuality_Output $checkQuantityAndQuality_Output = new CheckQuantityAndQuality_Output();
+	$checkQuantityAndQuality_Output.setCheckQuantityAndQuality("Failed");
+	insert($checkQuantityAndQuality_Output);
+		{
+			AnnotationItem $annotation = new AnnotationItem();
+			String $message = $F.createAnnotation(new Object[] {"One of the checks failed"});
+			$annotation.setDecision("checkQuantityAndQuality");
+			$annotation.setRuleName("checkQuantityAndQuality_rule_2");
+			$annotation.setCategory(AnnotationCategory.INFO);
+			$annotation.setMessage($message);
+			$annotation.setTimestamp(OffsetDateTime.now());
+			$allMessages.add($annotation);
+		}
+end
+
+rule "checkQuantityAndQuality_emptyResultFallBack"
+    no-loop true
+    //decision:  checkQuantityAndQuality
+    salience -1
+    ruleflow-group 'checkquantityandquality'
+when
+    $F : DmnFormulaeLocal(  )  
+    $H : DmnHierarchyFormulae(  )  
+    not( 
+    CheckQuantityAndQuality_Output(  )   ) 
+    $input : Input(  )  
+then
+	CheckQuantityAndQuality_Output $checkQuantityAndQuality_Output = new CheckQuantityAndQuality_Output();
+	$checkQuantityAndQuality_Output.setCheckQuantityAndQuality(null);
+	insert($checkQuantityAndQuality_Output);
+end
